@@ -1,0 +1,107 @@
+/*  */
+
+.antmaze_high_dim_agv {
+    /* max-width: 100px; */
+    /* border-radius: 10px !important; */
+  }
+  
+  
+  
+/*  */
+
+.cpdfu_gradient_text {
+    /* font-size: 50px; */
+    font-weight: bold;
+    background: linear-gradient(to right, #AC55FC, #00B0F0, #AC55FC); /* Adjust colors */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.sns_muted_blue {
+  color: rgb(72, 120, 208);
+}
+
+.sns_muted_purple {
+  color: rgb(149, 108, 180);
+}
+
+.antmaze_high_dim_item {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+  
+.antmaze_high_dim_item img {
+    /* width: 50%; */
+    /* max-width: 235px; */
+    min-width: 180px;
+    max-width: 270px;
+    border-width: 2.5px; 
+    border-style: solid; 
+    border-color: #A6A6A6;
+    border-radius: 10px !important;
+}
+  
+.antmaze_high_dim_item video {
+    /* width: 50%; */
+    min-width: 150px;
+    max-width: 255px;
+    border-width: 2.5px; 
+    border-style: solid; 
+    /* border-color: #FF7E79; */
+    /* #767171 */
+    border-color: #A6A6A6;
+    border-radius: 10px !important;
+    /* (255, 126, 121, 1); */
+}
+
+
+
+.antmaze_explore_item {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.antmaze_explore_item video {
+    /* width: 50%; */
+    min-width: 180px;
+    max-width: 270px;
+    border-width: 2.5px; 
+    border-style: solid; 
+    /* border-color: #FF7E79; */
+    /* #767171 */
+    border-color: #A6A6A6;
+    border-radius: 10px !important;
+    /* (255, 126, 121, 1); */
+}
+
+
+
+
+
+.splide_cpdfu video {
+    /* min-width: 200px; */
+    height: auto;
+    width: 300px;
+    /* height: 240px; */
+}
+
+.cpdfu_base_row {
+  display: flex; 
+  justify-content: center; 
+  gap: calc(5% + 10px);
+  margin-top: 10px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.cpdfu_base_row video {
+  min-width: 100px;
+  border-radius: 6px; /* Rounded corners */
+}
+
+@media (max-width: 800px) {
+  .cpdfu_base_row {
+    flex-wrap: wrap;
+  }
+}
