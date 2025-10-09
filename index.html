@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-        content="Project Page for Compositional Video Planning via Inference-Time Diffusion Scaling">
-  <meta name="keywords" content="Artificial Intelligence, Machine Learning, Embodied AI, Diffusion Model, Decision Making, Trajectory Stitching, Robotics, Behavior Cloning">
+  <meta name="description" content="Project Page for Compositional Video Planning via Inference-Time Diffusion Scaling">
+  <meta name="keywords"
+    content="Artificial Intelligence, Machine Learning, Embodied AI, Diffusion Model, Decision Making, Trajectory Stitching, Robotics, Behavior Cloning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- TODO: -->
   <meta name="author" content="Under Review">
-  <title>Compositional Video Planning via Inference-Time Diffusion Scaling</title>
+  <title>Compositional Visual Planning via Inference-Time Diffusion Scaling</title>
 
   <!-- TODO: -->
   <meta name="google-site-verification" content="luiKJ6NTZHsgoD15xoPljBeAHAgSwMOoXhBmQG8-LQ8" />
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <!-- <link rel="stylesheet" href="./static/css/bulma-carousel.min.css"> -->
   <!-- <link rel="stylesheet" href="./static/css/bulma-slider.min.css"> -->
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="stylesheet" href="./static/css/index_compdfu.css">
   <link rel="stylesheet" href="bootstrap-grid.css">
@@ -43,71 +42,83 @@
 
 <body>
 
-<!-- TODO: -->
-<!-- Navigation Bar -->
+  <!-- TODO: -->
+  <!-- Navigation Bar -->
 
-<!-- style="margin-bottom: 10px; padding-bottom: 10px" -->
-<!-- style="margin-bottom: 0px; padding-bottom: 0px" -->
-<section class="hero" style="background-color: #ebf0f1;">
-  <div class="hero-body hero-body-dec19" >
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <!-- is-1 or is-2 -->
-          <h1 class="title publication-title" style="font-size: 48px;">
-            Compositional Video Planning via <br> Inference-Time Diffusion Scaling
-          </h1>
-
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              Anonymous Submission
-            </span>
-            
-
-          </div>
-
+  <!-- style="margin-bottom: 10px; padding-bottom: 10px" -->
+  <!-- style="margin-bottom: 0px; padding-bottom: 0px" -->
+  <section class="hero" style="background-color: #ebf0f1;">
+    <div class="hero-body hero-body-dec19">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
           <div class="column has-text-centered">
-            <!-- Code will be released upon acceptance. -->
+            <!-- is-1 or is-2 -->
+            <h1 class="title publication-title" style="font-size: 48px;">
+              Compositional Video Planning via <br> Inference-Time Diffusion Scaling
+            </h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Anonymous Submission
+              </span>
+
+
+            </div>
+
+            <div class="column has-text-centered">
+              <!-- Code will be released upon acceptance. -->
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified div_abs_text">
+            <p>
+              Diffusion models excel at short-horizon robot planning, yet scaling them to long-horizon tasks remains
+              challenging due to computational constraints and limited training data.
+              Existing compositional approaches stitch together short segments by separately denoising each component
+              and averaging overlapping regions.
+              However, this suffers from instability as the factorization assumption breaks down in noisy data space,
+              leading to inconsistent global plans.
+              We propose that the key to stable compositional generation lies in enforcing boundary agreement on the
+              estimated clean data (Tweedie estimates) rather than on noisy intermediate states.
+              Our method formulates long-horizon planning as inference over a chain-structured factor graph of
+              overlapping video chunks, where pretrained short-horizon video diffusion models provide local priors.
+              At inference time, we enforce boundary agreement through a novel combination of synchronous and
+              asynchronous message passing that operates on Tweedie estimates, producing globally consistent guidance
+              without requiring additional training.
+              Our training-free framework demonstrates significant improvements over existing baselines across 100
+              simulation tasks spanning 4 diverse scenes, effectively generalizing to unseen start-goal combinations
+              that were not present in the original training data.
+            </p>
           </div>
 
 
-          
+
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified div_abs_text">
-          <p>
-
-            Diffusion models excel at short-horizon robot planning, yet scaling them to long-horizon tasks remains challenging due to computational constraints and limited training data. Existing compositional approaches stitch together short segments by separately denoising each component and averaging overlapping regions, but this suffers from instability as the factorization assumption breaks down in noisy data space, leading to inconsistent global plans. We propose that the key to stable compositional generation lies in enforcing consistency constraints on the estimated clean data (Tweedie estimates) rather than on noisy intermediate states—our method formulates long-horizon planning as inference over a chain-structured factor graph of overlapping video chunks, where pretrained short-horizon video diffusion models provide local priors, and at inference time, we enforce cross-factor agreement through a novel combination of synchronous and asynchronous message passing that operates on Tweedie estimates, producing globally consistent guidance without requiring additional training. Our training-free framework demonstrates significant improvements over existing baselines across 100 simulation tasks spanning 4 diverse scenes and 4 real robot manipulation tasks, effectively generalizing to unseen start-goal combinations that were not present in the original training data.
-
-            
-          </p>
-        </div>
-
-
-
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
 
 
 
 
-<hr>
+  <hr>
 
 
 
@@ -122,71 +133,72 @@
 
 
 
-<hr>
+  <hr>
 
 
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Conclusion</h2>
-        <div class="content has-text-justified div_abs_text">
-          <p>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Conclusion</h2>
+          <div class="content has-text-justified div_abs_text">
+            <p>
 
 
-            
-          </p>
+
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
 
 
 
 
-<hr>
+  <hr>
 
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content column is-full-width ">
-    <h2 class="title is-4">BibTeX</h2>
-    <pre><code>Anonymous.
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content column is-full-width ">
+      <h2 class="title is-4">BibTeX</h2>
+      <pre><code>Anonymous.
     </code></pre>
-  </div>
-</section>
-
-
-
-
-
-
-
-<footer class="footer">
-  <div class="container">
-
-    <div class="content has-text-centered">
-      
     </div>
+  </section>
 
-    <div class="columns is-centered">
-      <div class="column is-8 has-text-centered">
-        <div class="content">
-          <p>
-            This website is forked from the
-						<a href="https://nerfies.github.io/">Nerfies</a> and
-						<a href="https://github.com/nerfies/nerfies.github.io">source code</a>
-          </p>
+
+
+
+
+
+
+  <footer class="footer">
+    <div class="container">
+
+      <div class="content has-text-centered">
+
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-8 has-text-centered">
+          <div class="content">
+            <p>
+              This website is forked from the
+              <a href="https://nerfies.github.io/">Nerfies</a> and
+              <a href="https://github.com/nerfies/nerfies.github.io">source code</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
-<script src="./static/js/last_run.js"></script>
+  <script src="./static/js/last_run.js"></script>
 
 </body>
+
 </html>
