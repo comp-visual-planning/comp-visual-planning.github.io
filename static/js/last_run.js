@@ -55,6 +55,24 @@
 // splide.mount();
 
 
+var splide = new Splide( '#splide-mw-qual', { 
+  type: 'slide', 
+  perPage: 1,
+  perMove: 1,
+  padding: '0rem',
+  lazyLoad: 'nearby',
+  focus    : 0,
+  pagination: true,
+  breakpoints: {
+    640: {
+      arrows: false,
+    }
+  },
+}
+);
+
+splide.mount();
+
 
 var splide = new Splide( '#splide-antmaze-medium-qual-v2', {
   // type: 'loop', 

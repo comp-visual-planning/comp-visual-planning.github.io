@@ -14,33 +14,33 @@ function preloadInterpolationImages() {
 
 function setInterpolationImage(i) {
   var image = interp_images[i];
-  image.ondragstart = function() { return false; };
-  image.oncontextmenu = function() { return false; };
+  image.ondragstart = function () { return false; };
+  image.oncontextmenu = function () { return false; };
   $('#interpolation-image-wrapper').empty().append(image);
 }
 
 
-$(document).ready(function() {
-    // Check for click events on the navbar burger icon
-    $(".navbar-burger").click(function() {
-      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-      $(".navbar-burger").toggleClass("is-active");
-      $(".navbar-menu").toggleClass("is-active");
+$(document).ready(function () {
+  // Check for click events on the navbar burger icon
+  $(".navbar-burger").click(function () {
+    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+    $(".navbar-burger").toggleClass("is-active");
+    $(".navbar-menu").toggleClass("is-active");
 
-    });
+  });
 
-    //// remove useless code of initializing the bulma carousel.
-    // var options = {
-		// 	slidesToScroll: 1,
-		// 	slidesToShow: 3.3,
-		// 	loop: true,
-		// 	infinite: true,
-		// 	autoplay: false,
-		// 	autoplaySpeed: 3000,
-    // }
+  //// remove useless code of initializing the bulma carousel.
+  // var options = {
+  // 	slidesToScroll: 1,
+  // 	slidesToShow: 3.3,
+  // 	loop: true,
+  // 	infinite: true,
+  // 	autoplay: false,
+  // 	autoplaySpeed: 3000,
+  // }
 
 
-    
+
 
 })
 
@@ -55,16 +55,16 @@ function update_rm2d_comp_multiH() {
   var r_video = document.getElementById("lb_qual_nVidEp_rollout");
 
   // r_video.src = "materials/lb-suc-vs-numRollout/rollout_tk71_envSd120_fps60_r" + num_rollouts + ".mp4";
-  if (num_comp == 8){
+  if (num_comp == 8) {
     r_video.src = "materials/pntM-giant-diff-ncomp/ours_tk1_ncp8_sd75_pIdx0_250205-131131.mp4";
   }
-  else if (num_comp == 9){
+  else if (num_comp == 9) {
     r_video.src = "materials/pntM-giant-diff-ncomp/ours_tk1_ncp9_sd79_pIdx0_250205-123431.mp4";
   }
-  else if (num_comp == 10){
+  else if (num_comp == 10) {
     r_video.src = "materials/pntM-giant-diff-ncomp/ours_tk1_ncp10_sd79_pIdx0_250205-182941.mp4";
   }
-  else if (num_comp == 11){
+  else if (num_comp == 11) {
     r_video.src = "materials/pntM-giant-diff-ncomp/ours_tk1_ncp11_sd47_pIdx0_250205-171732.mp4";
   }
 
@@ -156,7 +156,7 @@ function playVideosSequentially(videoList) {
   // Function to play the next video
   function playNextVideo() {
     if (currentVideoIndex < videoList.length - 1) {
-      videoList[currentVideoIndex+1].play()
+      videoList[currentVideoIndex + 1].play()
       currentVideoIndex++;
     } else {
       // All videos have been played
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function replayVideosInDiv(divId, replay_type) {
   const div = document.getElementById(divId);
-  
+
   console.log(`divId: ${divId}, ${div} `);
 
   if (!div) {
@@ -286,14 +286,14 @@ function replayVideosInDiv(divId, replay_type) {
     return;
   }
 
-  if (replay_type == 'parallel'){
+  if (replay_type == 'parallel') {
     videos.forEach(video => {
       video.pause();
       video.currentTime = 0;
       video.play();
     });
   }
-  else if (replay_type == 'seq'){
+  else if (replay_type == 'seq') {
     videos.forEach(video => {
       video.pause();
       video.currentTime = 0;
@@ -306,7 +306,7 @@ function replayVideosInDiv(divId, replay_type) {
 
   console.log(` ${divId}: ${videos[0].currentSrc}, ${videos[0].currentTime}. `);
 
-  
+
 
   // videos[0].play().catch(error => {
   //   console.error("Autoplay prevented:", error);
