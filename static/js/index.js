@@ -147,32 +147,124 @@ function update_antmaze_high_dim_agv_qual_list() {
 }
 
 
-
-
-function playVideosSequentially(videoList) {
-
-  let currentVideoIndex = 0;
-
-  // Function to play the next video
-  function playNextVideo() {
-    if (currentVideoIndex < videoList.length - 1) {
-      videoList[currentVideoIndex + 1].play()
-      currentVideoIndex++;
-    } else {
-      // All videos have been played
-      console.log('All videos have been played.');
-      // Optionally, remove the event listener if no longer needed
-      videoList[currentVideoIndex].removeEventListener('ended', playNextVideo);
-    }
-  }
-  // start the first video, add listen to catch the end of the first video
-  for (let i = 0; i < videoList.length; i++) {
-    videoList[i].addEventListener('ended', playNextVideo);
-  }
-  videoList[0].play()
-
+function _seqOrder(vs) {
+  const rank = v =>
+    /(-sv-|predv)/.test(v.id) ? 0 :
+      /(-pr-|rollout)/.test(v.id) ? 1 : 2;
+  return Array.from(vs).sort((a, b) => rank(a) - rank(b));
 }
 
+function _whenMetadata(v) {
+  return new Promise((res) => {
+    if (v.readyState >= 1 && Number.isFinite(v.duration)) return res();
+    v.addEventListener('loadedmetadata', () => res(), { once: true });
+  });
+}
+
+function _reset(vs) {
+  vs.forEach(v => {
+    try {
+      v.loop = false;
+      v.autoplay = false;
+      v.muted = true;
+      v.pause();
+      v.currentTime = 0;
+      if (v.src) v.load();
+    } catch (_) { }
+  });
+}
+
+const _restartTimers = new Map();
+const _playAbort = new Map();
+
+function restartSVPR(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+
+
+  const prev = _playAbort.get(containerId);
+  if (prev) prev.abort();
+
+
+  const slide = el.closest('.splide__slide') || el;
+  const allInSlide = slide.querySelectorAll('video');
+  allInSlide.forEach(v => { try { v.pause(); v.currentTime = 0; } catch (_) { } });
+
+
+  const controller = new AbortController();
+  _playAbort.set(containerId, controller);
+
+
+  clearTimeout(_restartTimers.get(containerId));
+  _restartTimers.set(containerId, setTimeout(async () => {
+
+    const vids = Array.from(el.querySelectorAll('video'));
+    _reset(vids);
+    await Promise.race([
+      Promise.all(vids.map(_whenMetadata)),
+      new Promise(res => controller.signal.addEventListener('abort', res, { once: true }))
+    ]);
+    if (controller.signal.aborted) return;
+
+    await playSVThenPRInDiv(el, controller.signal);
+  }, 0));
+}
+
+async function _playGroupParallel(vs, signal) {
+  if (!vs || vs.length === 0) return;
+
+
+  await Promise.race([
+    Promise.all(vs.map(_whenMetadata)),
+    signal ? new Promise(res => signal.addEventListener('abort', res, { once: true })) : Promise.resolve()
+  ]);
+  if (signal?.aborted) return;
+
+  const maxDur = Math.max(...vs.map(v => Number.isFinite(v.duration) ? v.duration : 0)) || 8;
+
+  const endedAll = Promise.all(
+    vs.map(v => new Promise(res => v.addEventListener('ended', res, { once: true })))
+  );
+
+
+  vs.forEach(v => { try { v.play().catch(() => { }); } catch (_) { } });
+
+
+  await Promise.race([
+    endedAll,
+    new Promise(res => setTimeout(res, Math.ceil(maxDur * 1000 + 300))),
+    signal ? new Promise(res => signal.addEventListener('abort', res, { once: true })) : Promise.resolve()
+  ]);
+
+
+  if (signal?.aborted) {
+    vs.forEach(v => { try { v.pause(); v.currentTime = 0; } catch (_) { } });
+  }
+}
+
+async function playSVThenPRInDiv(div, signal) {
+  const vids = Array.from(div.querySelectorAll('video'));
+  const sv = vids.filter(v => /(-sv-|predv)/.test(v.id));
+  const pr = vids.filter(v => /(-pr-|rollout)/.test(v.id));
+
+  _reset(vids);
+  await _playGroupParallel(sv, signal);
+  if (signal?.aborted) return;
+  await _playGroupParallel(pr, signal);
+}
+
+
+async function playVideosSequentially(listOrNodeList) {
+  const vids = _seqOrder(listOrNodeList);
+  if (vids.length === 0) return;
+  _reset(vids);
+
+  for (const v of vids) {
+    await _whenMetadata(v);
+    try { await v.play(); } catch (_) { }
+    await new Promise(res => v.addEventListener('ended', res, { once: true }));
+  }
+}
 
 
 // function playVideosSequentially(videoList) {
@@ -217,51 +309,63 @@ function playVideosSequentially(videoList) {
 //   });
 // });
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Select all replay buttons
-  // const replayButtons = document.querySelectorAll('.replay');
-  // const replayButtons = document.querySelectorAll('.replay, .replay_lb_suc');
-  replayButtons = document.querySelectorAll('.replay, .replay_lb_suc, .replay_v2',);
-  // replayButtons = document.querySelectorAll('.replay_lb_suc');
+// document.addEventListener('DOMContentLoaded', () => {
+//   // Select all replay buttons
+//   // const replayButtons = document.querySelectorAll('.replay');
+//   // const replayButtons = document.querySelectorAll('.replay, .replay_lb_suc');
+//   replayButtons = document.querySelectorAll('.replay, .replay_lb_suc, .replay_v2',);
+//   // replayButtons = document.querySelectorAll('.replay_lb_suc');
 
-  rm_id = 'btn_cal_replay'
-  replayButtons = Array.from(replayButtons).filter(button => button.id !== rm_id);
+//   rm_id = 'btn_cal_replay'
+//   replayButtons = Array.from(replayButtons).filter(button => button.id !== rm_id);
 
-  // replayButtons.concat(replayButtons_2)
-  // const array1 = Array.from(replayButtons);
-  // const array2 = Array.from(replayButtons_2);
-  // Concatenate the arrays
-  // replayButtons = array1.concat(array2);
-  console.log('replayButtons', replayButtons)
+//   // replayButtons.concat(replayButtons_2)
+//   // const array1 = Array.from(replayButtons);
+//   // const array2 = Array.from(replayButtons_2);
+//   // Concatenate the arrays
+//   // replayButtons = array1.concat(array2);
+//   console.log('replayButtons', replayButtons)
 
-  // Attach click event listeners to each button
-  replayButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const sectionId = button.getAttribute('video_section');
-      replayVideosInDiv(sectionId, 'parallel');
-    });
-  });
+//   // Attach click event listeners to each button
+//   replayButtons.forEach(button => {
+//     button.addEventListener('click', () => {
+//       const sectionId = button.getAttribute('video_section');
+//       replayVideosInDiv(sectionId, 'parallel');
+//     });
+//   });
 
-  btn_2 = document.getElementById('btn_cal_replay');
-  // btn_2.removeEventListener('click');
-  console.log(`btn_2: ${btn_2}`)
+//   btn_2 = document.getElementById('btn_cal_replay');
+//   // btn_2.removeEventListener('click');
+//   console.log(`btn_2: ${btn_2}`)
 
-  btn_2.addEventListener('click', () => {
-    const sectionId = btn_2.getAttribute('video_section');
-    replayVideosInDiv(sectionId, 'seq');
-  });
+//   btn_2.addEventListener('click', () => {
+//     const sectionId = btn_2.getAttribute('video_section');
+//     replayVideosInDiv(sectionId, 'seq');
+//   });
 
-  // replayButtons_2
-  // replayButtons_2.forEach(button => {
-  //   btn_2.removeEventListener('click');
-  //   // button.addEventListener('click', () => {
-  //   //   const sectionId = button.getAttribute('video_section');
-  //   //   replayVideosInDiv(sectionId, 'seq');
-  //   // });
-  // });
+//   // replayButtons_2
+//   // replayButtons_2.forEach(button => {
+//   //   btn_2.removeEventListener('click');
+//   //   // button.addEventListener('click', () => {
+//   //   //   const sectionId = button.getAttribute('video_section');
+//   //   //   replayVideosInDiv(sectionId, 'seq');
+//   //   // });
+//   // });
 
+// });
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.replay, .replay_lb_suc, .replay_v2, #btn_cal_replay');
+  if (!btn) return;
+
+  const sectionId = btn.getAttribute('video_section');
+  if (!sectionId) {
+    console.warn('Replay button missing video_section attribute:', btn);
+    return;
+  }
+
+  const mode = btn.id === 'btn_cal_replay' ? 'seq' : 'parallel';
+  replayVideosInDiv(sectionId, mode);
 });
-
 
 /**
  * Replays all video elements within a specified div.
@@ -269,56 +373,52 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function replayVideosInDiv(divId, replay_type) {
   const div = document.getElementById(divId);
-
   console.log(`divId: ${divId}, ${div} `);
-
   if (!div) {
-    console.log(`Div with ID '${divId}'.`);
+    console.warn(`Div with ID '${divId}' not found.`);
     return;
   }
 
   const videos = div.querySelectorAll('video');
-
-  console.log(`video elements found within div '${divId}: ${div}, ${videos.length}'.`);
-
+  console.log(`video elements found within div '${divId}': ${videos.length}.`);
   if (videos.length === 0) {
     console.warn(`No video elements found within div '${divId}'.`);
     return;
   }
 
-  if (replay_type == 'parallel') {
+  const hasSV = Array.from(videos).some(v => /(-sv-|predv)/.test(v.id));
+  const hasPR = Array.from(videos).some(v => /(-pr-|rollout)/.test(v.id));
+  if (hasSV || hasPR) {
+    restartSVPR(divId);
+    return;
+  }
+
+  if (replay_type === 'parallel') {
     videos.forEach(video => {
       video.pause();
       video.currentTime = 0;
       video.play();
     });
-  }
-  else if (replay_type == 'seq') {
-    videos.forEach(video => {
-      video.pause();
-      video.currentTime = 0;
-    });
-    playVideosSequentially(videos)
-  }
-  else {
+  } else if (replay_type === 'seq') {
+    playVideosSequentially(videos);
+  } else {
     console.error("Not Implemented.");
   }
 
-  console.log(` ${divId}: ${videos[0].currentSrc}, ${videos[0].currentTime}. `);
-
-
-
-  // videos[0].play().catch(error => {
-  //   console.error("Autoplay prevented:", error);
-  // });
-
+  console.log(`${divId}: ${videos[0].currentSrc}, ${videos[0].currentTime}.`);
 }
 
 
-
-// ============================
-// Nov 6
-// ============================
+function setupSVThenPROnView(containerId, threshold = 0.75) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const obs = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) {
+      restartSVPR(containerId);
+    }
+  }, { threshold });
+  obs.observe(el);
+}
 
 // sequentially play the video
 document.addEventListener('DOMContentLoaded', () => {
