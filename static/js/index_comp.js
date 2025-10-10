@@ -188,6 +188,7 @@
     });
 
     splide.mount();
+    wireVideoLifecycleForSplide(splide, document.getElementById(`splide-${env}`));
 
     // Hook selects for both pages
     setupSelectors(env, 'ind');
@@ -324,16 +325,19 @@
     const rec = INDEX?.[env]?.pairs?.[pairKey(s, g)]?.episodes?.[ep];
     if (!rec) { clearMedia(env, page); return; }
 
-    // Images
     document.getElementById(`${env}-start-img-${page}`).src = rec.start_img || '';
     document.getElementById(`${env}-goal-img-${page}`).src = rec.goal_img || '';
 
-    // Videos
     const setVid = (id, src) => {
       const v = document.getElementById(id);
       if (!v) return;
-      if (src) { v.src = src; v.load(); }
-      else { v.removeAttribute('src'); v.load(); }
+      if (src) v.dataset.src = src; else delete v.dataset.src;
+
+      const isActiveSlide = !!v.closest('.splide__slide.is-active');
+      const needSwap = !!v.src && v.currentSrc !== src;
+
+      if (needSwap) _dehydrateVideo(v);
+      if (isActiveSlide && src) _hydrateVideo(v);
     };
 
     setVid(`${env}-sv-dc-${page}`, rec.sv?.diffcollage || '');
@@ -341,9 +345,9 @@
     setVid(`${env}-pr-dc-${page}`, rec.pr?.diffcollage || '');
     setVid(`${env}-pr-ours-${page}`, rec.pr?.ours || '');
 
-
     restartSVPR(`div_${env}_${page}`);
   }
+
 
 
   // ---------- Boot ----------
