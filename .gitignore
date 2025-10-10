@@ -1,0 +1,12 @@
+materials-ori/**
+luotest**
+.vscode/**
+trash/**
+.DS_Store
+**/.DS_Store
+
+## tmp
+# materials/XXX
+# !materials/XXX/
+
+# materials/

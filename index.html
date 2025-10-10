@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Project Page for Compositional Video Planning via Inference-Time Diffusion Scaling">
+  <meta name="keywords"
+    content="Artificial Intelligence, Machine Learning, Embodied AI, Diffusion Model, Decision Making, Trajectory Stitching, Robotics, Behavior Cloning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- TODO: -->
+  <meta name="author" content="Under Review">
+  <title>Compositional Visual Planning via Inference-Time Diffusion Scaling</title>
+
+  <!-- TODO: -->
+  <meta name="google-site-verification" content="luiKJ6NTZHsgoD15xoPljBeAHAgSwMOoXhBmQG8-LQ8" />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <!-- <link rel="stylesheet" href="./static/css/bulma-carousel.min.css"> -->
+  <!-- <link rel="stylesheet" href="./static/css/bulma-slider.min.css"> -->
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/index_comp.css">
+  <link rel="stylesheet" href="bootstrap-grid.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/splide.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/index_comp.js"></script>
+  <script src="load-mathjax.js" async></script>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <link rel="stylesheet" href="./static/css/splide.min.css">
+
+  <link rel="icon" type="image/x-icon" href="./materials/favicon.png" />
+
+</head>
+
+<body>
+
+  <!-- TODO: -->
+  <!-- Navigation Bar -->
+
+  <!-- style="margin-bottom: 10px; padding-bottom: 10px" -->
+  <!-- style="margin-bottom: 0px; padding-bottom: 0px" -->
+  <section class="hero" style="background-color: #ebf0f1;">
+    <div class="hero-body hero-body-dec19">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- is-1 or is-2 -->
+            <h1 class="title publication-title" style="font-size: 48px;">
+              Compositional Visual Planning via <br> Inference-Time Diffusion Scaling
+            </h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Anonymous Submission
+              </span>
+
+
+            </div>
+
+            <div class="column has-text-centered">
+              <!-- Code will be released upon acceptance. -->
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified div_abs_text">
+            <p>
+              Diffusion models excel at short-horizon robot planning, yet scaling them to long-horizon tasks remains
+              challenging due to computational constraints and limited training data.
+              Existing compositional approaches stitch together short segments by separately denoising each component
+              and averaging overlapping regions.
+              However, this suffers from instability as the factorization assumption breaks down in noisy data space,
+              leading to inconsistent global plans.
+              We propose that the key to stable compositional generation lies in enforcing boundary agreement on the
+              estimated clean data (Tweedie estimates) rather than on noisy intermediate states.
+              Our method formulates long-horizon planning as inference over a chain-structured factor graph of
+              overlapping video chunks, where pretrained short-horizon video diffusion models provide local priors.
+              At inference time, we enforce boundary agreement through a novel combination of synchronous and
+              asynchronous message passing that operates on Tweedie estimates, producing globally consistent guidance
+              without requiring additional training.
+              Our training-free framework demonstrates significant improvements over existing baselines across 100
+              simulation tasks spanning 4 diverse scenes, effectively generalizing to unseen start-goal combinations
+              that were not present in the original training data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+
+          <h2 class="title is-4">Motivating Toy Example</h2>
+
+          <div class="container is-max-desktop" style="overflow: hidden; margin: 0;">
+            <div class="splide_page_div_1" id="mw_qual_tk2">
+
+              <div class="toy_left_img">
+                <img src="materials/toy/dataset.png" alt="toy_dataset">
+                <p class="splide_kuka_high_margin_caption">Dataset Distribution</p>
+              </div>
+
+              <div class="toy_right_videos">
+                <div class="row_label">Noisy Samples</div>
+                <div class="kuka_toy_row">
+
+                  <div>
+                    <video playsinline autoplay muted>
+                      <source src="materials/toy/diffcollage/xts.mp4" type="video/mp4">
+                    </video>
+                    <p class="splide_kuka_low_margin_caption">DiffCollage</p>
+                  </div>
+
+                  <div>
+                    <video playsinline autoplay muted>
+                      <source src="materials/toy/ours/xts.mp4" type="video/mp4">
+                    </video>
+                    <p class="splide_kuka_low_margin_caption">Ours</p>
+                  </div>
+                </div>
+                <div class="row_label">Estimated Tweedies</div>
+                <div class="kuka_toy_row">
+                  <div>
+                    <video playsinline autoplay muted>
+                      <source src="materials/toy/diffcollage/x0s.mp4" type="video/mp4">
+                    </video>
+                    <p class="splide_kuka_low_margin_caption">DiffCollage</p>
+                  </div>
+
+                  <div>
+                    <video playsinline autoplay muted>
+                      <source src="materials/toy/ours/x0s.mp4" type="video/mp4">
+                    </video>
+                    <p class="splide_kuka_low_margin_caption">Ours</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="left-caption">
+            <b>Qualitative Illustration of Toy Example.</b>
+            TODO.
+            <span class="comp_dfu_prc_repl">
+              <span class="replay_v2" video_section="mw_qual_tk2">
+                <img src="static/replay.png" />
+                <span>replay</span>
+              </span>
+            </span>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- Begins Compositional Planning Benchmark -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-4">Compositional Planning Benchmark</h2>
+
+          <section class="hero is-light is-small" style="margin: 0px; padding: 0px">
+            <div class="container is-max-desktop" style="margin: 0px;  padding: 0px">
+              <div class="hero-body" style="margin: 0px;  padding-bottom: 10px; padding-top: 10px">
+
+                <div class="container is-max-desktop" style="overflow: hidden; margin: 0px">
+
+                  <div id="splide-mw-qual" class="splide">
+                    <div class="splide__track">
+                      <ul class="splide__list">
+
+
+
+                        <!-- MW TK 3 -->
+                        <li class="splide__slide splide_kuka">
+
+                          <div class="splide_page_div_1" id="mw_qual_tk3">
+
+                            <div>
+                              <span class="splide_kuka_prob_id_repl">
+                                Cube
+                                <span class="replay" video_section="mw_qual_tk3">
+                                  <img src="static/replay.png" />
+                                  <span>replay</span>
+                                </span>
+                              </span>
+                            </div>
+                            <div class="layout_figure">
+                              <img src="materials/benchmark/cube/layout.png" alt="cube_layout">
+                            </div>
+
+                            <div class=" kuka_base_row">
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="">
+                                  <source src="materials/benchmark/cube/start_0.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 0</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="">
+                                  <source src="materials/benchmark/cube/start_1.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 1</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="">
+                                  <source src="materials/benchmark/cube/start_2.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 2</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="">
+                                  <source src="materials/benchmark/cube/start_3.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 3</p>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </li>
+
+
+                        <!-- MW TK 4 -->
+                        <li class="splide__slide splide_kuka">
+
+                          <div class="splide_page_div_1" id="mw_qual_tk4">
+
+                            <div>
+                              <span class="splide_kuka_prob_id_repl">
+                                Drawer
+                                <span class="replay" video_section="mw_qual_tk4">
+                                  <img src="static/replay.png" />
+                                  <span>replay</span>
+                                </span>
+                              </span>
+                            </div>
+
+                            <div class="layout_figure">
+                              <img src="materials/benchmark/drawer/layout.png" alt="drawer_layout">
+                            </div>
+                            <div class="kuka_base_row">
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/drawer/start_0.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 0</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/drawer/start_1.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 1</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/drawer/start_2.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 2</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/drawer/start_3.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 3</p>
+                              </div>
+                            </div>
+
+                          </div>
+                        </li>
+
+
+                        <!-- MW Tk 5 -->
+                        <li class="splide__slide splide_kuka">
+                          <div class="splide_page_div_1" id="mw_qual_tk5">
+
+                            <div>
+                              <span class="splide_kuka_prob_id_repl">
+                                Puzzle
+                                <span class="replay" video_section="mw_qual_tk5">
+                                  <img src="static/replay.png" />
+                                  <span>replay</span>
+                                </span>
+                              </span>
+                            </div>
+                            <div class="layout_figure">
+                              <img src="materials/benchmark/puzzle/layout.png" alt="puzzle_layout">
+                            </div>
+                            <div class="kuka_puzzle_row">
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_0.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 0</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_1.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 1</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_2.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 2</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_3.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 3</p>
+                              </div>
+
+                            </div>
+
+                            <div class="kuka_puzzle_row">
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_4.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 4</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_5.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 5</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_6.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 6</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/puzzle/start_7.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_small_caption">Start 7</p>
+                              </div>
+                            </div>
+
+                          </div>
+                        </li>
+
+
+                        <!-- MW TK 6 -->
+                        <li class="splide__slide splide_kuka">
+
+                          <div class="splide_page_div_1" id="mw_qual_tk6">
+
+                            <div>
+                              <span class="splide_kuka_prob_id_repl">
+                                Tool-Use
+                                <span class="replay" video_section="mw_qual_tk6">
+                                  <img src="static/replay.png" />
+                                  <span>replay</span>
+                                </span>
+                              </span>
+                            </div>
+                            <div class="layout_figure">
+                              <img src="materials/benchmark/tool_use/layout.png" alt="tool_layout">
+                            </div>
+                            <div class="kuka_tool_row">
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/tool_use/start_0.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 0</p>
+                              </div>
+
+                              <div>
+                                <video playsinline="" autoplay="" muted="" preload="none">
+                                  <source src="materials/benchmark/tool_use/start_1.mp4" type="video/mp4">
+                                </video>
+                                <p class="splide_kuka_caption">Start 1</p>
+                              </div>
+                            </div>
+
+                          </div>
+                        </li>
+
+
+                      </ul>
+                    </div>
+                  </div>
+
+
+
+
+                </div>
+
+                <b> Qualitative Illustration of Compositional Planning Benchmark.</b>
+                TODO.
+              </div>
+            </div>
+          </section>
+
+          <!-- <b> Qualitative Comparison in Meta-World Environment.</b>  -->
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div id="evals-container"></div>
+
+
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Conclusion</h2>
+          <div class="content has-text-justified div_abs_text">
+            <p>
+              We introduced Compositional Visual Planning, an inference-time method that composes long-horizon plans by
+              stitching overlapping video factors with message passing on Tweedie estimates. A chain-structured factor
+              graph imposes global consistency, enforced via joint synchronous and asynchronous updates, while
+              diffusion-sphere guidance balances alignment and diversity without retraining. Compositional Visual
+              Planning is plug-and-play with short-horizon diffusion video prediction model, scales with test-time
+              compute, and generalizes to unseen start–goal combinations.
+              Beyond robotics, the framework is applicable to broader domains, such as panorama image generation and
+              long-form text-to-video synthesis, which we leave for future exploration.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <hr>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content column is-full-width ">
+      <h2 class="title is-4">BibTeX</h2>
+      <pre><code>Anonymous.
+    </code></pre>
+    </div>
+  </section>
+
+
+
+
+
+
+
+  <footer class="footer">
+    <div class="container">
+
+      <div class="content has-text-centered">
+
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-8 has-text-centered">
+          <div class="content">
+            <p>
+              This website is forked from the
+              <a href="https://nerfies.github.io/">Nerfies</a> and
+              <a href="https://github.com/nerfies/nerfies.github.io">source code</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./static/js/last_run.js"></script>
+
+</body>
+
+</html>
