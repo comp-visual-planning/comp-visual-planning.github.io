@@ -44,18 +44,21 @@ function wireVideoLifecycleForSplide(splide, rootEl) {
     splide.on('mounted move', update);
 
     const rootIO = new IntersectionObserver(([entry]) => {
-        splideInView = entry.isIntersecting;
+        splideInView = entry.intersectionRatio > 0;
         update();
-    }, { threshold: 0.25 });
+    }, { threshold: 0 });
     rootIO.observe(rootEl);
 
     const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             const v = e.target;
-            if (e.isIntersecting) _hydrateVideo(v);
-            else _dehydrateVideo(v);
+            if (e.intersectionRatio > 0) {
+                _hydrateVideo(v);
+            } else {
+                _dehydrateVideo(v);
+            }
         });
-    }, { threshold: 0.6 });
+    }, { threshold: 0 });
 
     rootEl.querySelectorAll('video').forEach(v => io.observe(v));
 
