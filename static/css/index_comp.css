@@ -225,3 +225,21 @@
 .splide[id^="splide-"] .splide__pagination {
   bottom: 10px !important;
 }
+
+section.section:not(#abstract):not(#conclusion) .columns.is-centered {
+  justify-content: flex-start;
+}
+
+section.section:not(#abstract):not(#conclusion) .has-text-centered {
+  text-align: left !important;
+}
+
+section.section:not(#abstract):not(#conclusion) .title {
+  text-align: left;
+  margin-left: 0;
+}
+
+section.section:not(#abstract):not(#conclusion) {
+  padding-top: 1.3rem;
+  padding-bottom: 1.3rem;
+}

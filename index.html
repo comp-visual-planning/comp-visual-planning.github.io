@@ -82,7 +82,7 @@
 
 
 
-  <section class="section">
+  <section class="section" id="abstract">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
@@ -168,7 +168,19 @@
 
           <div class="left-caption">
             <b>Qualitative Illustration of Toy Example.</b>
-            TODO.
+            To illustrate our approach, we consider a simple 2D drawing task in which the objective is to generate a
+            three-petal “flower” by composing three
+            120° circular arc segments. We train a short-horizon diffusion model on <em>arc</em> clips from the
+            dataset shown on the left. At test time,
+            <span style="color: #00c743; font-weight: bold;">factor 1</span>,
+            <span style="color: #ED784A; font-weight: bold;">factor 2</span>, and
+            <span style="color: #1984C5; font-weight: bold;">factor 3</span>
+            —with partial overlaps—are composed to produce the full flower-like pattern. The right side
+            visualizes noisy samples and their corresponding
+            Tweedie mean estimates from both DiffCollage and our method. While DiffCollage drifts and
+            produces boundary gaps between factors, resulting in globally inconsistent generations, our method rapidly
+            converges by enforcing boundary agreement on the Tweedie estimates, thereby maintaining global consistency
+            and guiding the noisy samples to align seamlessly across factor boundaries.
             <span class="comp_dfu_prc_repl">
               <span class="replay_v2" video_section="mw_qual_tk2">
                 <img src="static/replay.png" />
@@ -442,7 +454,22 @@
                 </div>
 
                 <b> Qualitative Illustration of Compositional Planning Benchmark.</b>
-                TODO.
+                We introduce a benchmark for <em>compositional planning</em> in 6-DoF robotic manipulation. Each scene
+                contains <em>N</em> start states and <em>N</em> goal states, yielding a total of <em>N²</em> possible
+                tasks corresponding to all start–goal pairs (task layouts are shown above; swipe horizontally to view
+                more). The training dataset includes demonstrations for only <em>N</em> of these start–goal pairs. At
+                test time, we evaluate the planner on both the <em>N</em> seen pairs (in-distribution) and the remaining
+                <em>N² – N</em> unseen pairs (out-of-distribution). A capable planner should generalize to novel
+                start–goal combinations if the dataset provides sufficient coverage of the constituent behavioral
+                fragments.
+
+                The goal of this benchmark is to evaluate whether an algorithm can acquire distinct high-level skills
+                through <em>skill-agnostic factors</em> and compose them to solve new tasks at test time. This requires
+                learning not only low-level motor control skills, but also high-level sequential reasoning and visual
+                understanding of 3D geometry and physics. All experiments are conducted in the <em>visual planning</em>
+                setting, where the robot receives only raw pixel observations without access to any privileged state
+                information. We additionally visualize the task reset ranges (videos above) to illustrate the diversity
+                of task configurations and reset ranges.
               </div>
             </div>
           </section>
@@ -455,6 +482,42 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+
+          <h2 class="title is-4">Evaluation on Compositional Planning Benchmark</h2>
+          <p>
+            We evaluate our approach on the proposed <em>Compositional Planning Benchmark</em>, which comprises 100
+            diverse tasks. We release all evaluation materials, including synthesized video plans and policy rollouts,
+            for both our method and DiffCollage. Comprehensive qualitative results are presented below.
+          </p>
+
+          <p>
+            Our evaluation is designed to address three key questions: (1) the <strong>visual fidelity</strong> of
+            synthesized video plans, illustrated through high-quality visualizations; (2) the <strong>compositional
+              generalization</strong> of our approach to long-horizon, out-of-distribution tasks; and (3) the extent to
+            which <strong>video plans can effectively guide low-level robotic control</strong>. Together, these results
+            demonstrate the scalability and reliability of compositional visual planning in challenging robotic
+            settings.
+          </p>
+
+          <p>
+            For pixel-based evaluations (synthesized videos), we disable ray tracing to ensure fully observable scenes
+            without shadows or lighting artifacts. For policy rollouts, ray tracing is enabled to provide physically
+            realistic observations and a clearer visualization of the robot’s manipulation skills.
+          </p>
+        </div>
+      </div>
+  </section>
+
+  </div>
+
+  </div>
+  </div>
+  </div>
+  </section>
 
   <div id="evals-container"></div>
 
@@ -462,7 +525,7 @@
 
 
 
-  <section class="section">
+  <section class="section" id="conclusion">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-full-width">

@@ -7,17 +7,84 @@
 (function () {
   // --- Task meta (start/goal counts and IND pairs)
   const ENV_META = {
-    cube: { starts: 4, goals: 4, indist: [[0, 0], [1, 2], [2, 1], [3, 3]], title: 'Cube' },
-    drawer: { starts: 4, goals: 4, indist: [[0, 0], [1, 2], [2, 1], [3, 3]], title: 'Drawer' },
-    puzzle: { starts: 8, goals: 8, indist: [[0, 0], [1, 6], [2, 5], [3, 4], [4, 3], [5, 2], [6, 1], [7, 7]], title: 'Puzzle' },
-    tool_use: { starts: 2, goals: 2, indist: [[0, 0], [1, 1]], title: 'Tool-Use' },
+    cube: {
+      starts: 4, goals: 4,
+      indist: [[0, 0], [1, 2], [2, 1], [3, 3]],
+      title: 'Cube',
+      footer: {
+        title: 'Qualitative Illustration — Cube Scene',
+        text: `16 tasks in total: 4 in-distribution (IND) with demonstrations and 12 out-of-distribution (OOD) without demonstrations.
+We compose 5 factors (models) to solve these tasks.
+Motor skill: fine-grained, contact-rich manipulation.
+Sequential reasoning: first rearrange, then stack to reach different goal configurations.`
+      }
+    },
+
+    drawer: {
+      starts: 4, goals: 4,
+      indist: [[0, 0], [1, 2], [2, 1], [3, 3]],
+      title: 'Drawer',
+      footer: {
+        title: 'Qualitative Illustration — Drawer Scene',
+        text: `16 tasks in total: 4 IND with demonstrations and 12 OOD without demonstrations.
+    We compose 5 factors (models).
+    Motor skill: precise, contact-rich interaction with the drawer handle and accurate drawing.
+    Sequential reasoning: acquire the pen first, avoid collisions with drawer, then draw the target patterns for different goals.`
+      }
+    },
+
+    puzzle: {
+      starts: 8, goals: 8,
+      indist: [[0, 0], [1, 6], [2, 5], [3, 4], [4, 3], [5, 2], [6, 1], [7, 7]],
+      title: 'Puzzle',
+      footer: {
+        title: 'Qualitative Illustration — Puzzle Scene',
+        text: `64 tasks in total: 8 IND with demonstrations and 56 OOD without demonstrations.
+We compose 6 factors (models).
+Motor skill: precise, contact-rich grasp/placement of puzzle pieces.
+Sequential reasoning: rearrange and then assemble into the target configuration, choosing different assembly orders based on the start and goal.`
+      }
+    },
+
+    tool_use: {
+      starts: 2, goals: 2,
+      indist: [[0, 0], [1, 1]],
+      title: 'Tool-Use',
+      footer: {
+        title: 'Qualitative Illustration — Tool-Use Scene',
+        text: `4 tasks in total: 2 IND with demonstrations and 2 OOD without demonstrations.
+We compose 3 factors (models).
+Motor skill: accurate, contact-rich manipulation of the tool and tool-object interaction.
+Sequential reasoning: arrange objects, obtain the tool first, then use it to achieve different goals.`
+      }
+    },
   };
 
   let INDEX = null; // loaded from materials/evals/index.json
 
   const pairKey = (s, g) => `${s}_${g}`;
   const isInd = (env, s, g) => ENV_META[env].indist.some(([a, b]) => a === s && b === g);
+  function buildFooter(env) {
+    const meta = ENV_META[env] || {};
+    const f = meta.footer || {};
 
+    // 如果你用了 footerHTML，就优先渲染整段 HTML
+    if (meta.footerHTML) {
+      return `<div class="section-footer">${meta.footerHTML}</div>`;
+    }
+
+    // 否则用 title + text（提供默认回退，避免漏配）
+    const title = f.title || `Qualitative Illustration — ${meta.title || env}`;
+    const text = f.text || `${meta.starts || '?'} starts × ${meta.goals || '?'} goals → ${(meta.starts && meta.goals) ? (meta.starts * meta.goals) : '?'
+      } tasks.`;
+
+    return `
+    <div class="section-footer">
+      <b>${title}</b>
+      <span> ${text}</span>
+    </div>
+  `;
+  }
   // ---------- DOM builders ----------
   function buildSectionHTML(env) {
     const human = ENV_META[env].title;
@@ -71,8 +138,7 @@
                 </div> <!-- /.hero-body -->
               </div> <!-- /.container (hero wrapper) -->
             </section> <!-- /.hero -->
-         <b> Qualitative Illustration of Compositional Planning Benchmark.</b>
-                TODO.
+         ${buildFooter(env)}
           </div> <!-- /.column -->
        
         </div> <!-- /.columns -->
@@ -420,4 +486,6 @@
     });
   });
 })();
+
+
 
