@@ -1,4 +1,4 @@
-const MAX_HYDRATE = 16;
+const MAX_HYDRATE = 36; // max videos to hydrate at once
 const _hydrated = new Set();
 
 function _hydrateVideo(v) {
@@ -20,8 +20,16 @@ function _dehydrateVideo(v) {
 }
 
 function wireVideoLifecycleForSplide(splide, rootEl) {
+    let splideInView = false;
+
     function update() {
         const slides = Array.from(rootEl.querySelectorAll('.splide__slide'));
+
+        if (!splideInView) {
+            slides.forEach(li => li.querySelectorAll('video').forEach(_dehydrateVideo));
+            return;
+        }
+
         const idx = splide.index;
         slides.forEach((li, i) => {
             const vids = li.querySelectorAll('video');
@@ -34,19 +42,25 @@ function wireVideoLifecycleForSplide(splide, rootEl) {
     }
 
     splide.on('mounted move', update);
-    update();
+
+    const rootIO = new IntersectionObserver(([entry]) => {
+        splideInView = entry.isIntersecting;
+        update();
+    }, { threshold: 0.25 });
+    rootIO.observe(rootEl);
 
     const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             const v = e.target;
             if (e.isIntersecting) _hydrateVideo(v);
-            else if (!v.closest('.splide__slide.is-active')) _dehydrateVideo(v);
+            else _dehydrateVideo(v);
         });
     }, { threshold: 0.6 });
 
     rootEl.querySelectorAll('video').forEach(v => io.observe(v));
-}
 
+    update();
+}
 
 
 document.addEventListener('DOMContentLoaded', () => {
