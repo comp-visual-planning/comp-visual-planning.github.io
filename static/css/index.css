@@ -55,8 +55,9 @@ body {
 
 .publication-venue {
   color: #555;
-  width: fit-content;
   font-weight: bold;
+  text-align: center;
+  margin: 0.75rem auto 0.25rem;
 }
 
 .publication-awards {
