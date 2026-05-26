@@ -226,6 +226,17 @@
   bottom: 10px !important;
 }
 
+.abstract-teaser-video {
+  margin-top: 1.5rem;
+}
+
+.abstract-teaser-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
 section.section:not(#abstract):not(#conclusion) .columns.is-centered {
   justify-content: flex-start;
 }
