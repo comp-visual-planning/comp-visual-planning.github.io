@@ -5,6 +5,8 @@ trash/**
 .DS_Store
 **/.DS_Store
 
+materials/benchmark/**/*.mp4
+
 ## tmp
 # materials/XXX
 # !materials/XXX/
