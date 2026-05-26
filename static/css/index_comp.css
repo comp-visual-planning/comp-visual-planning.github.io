@@ -226,11 +226,12 @@
   bottom: 10px !important;
 }
 
-.abstract-teaser-video {
-  margin-top: 1.5rem;
+.teaser-video-wrapper {
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
-.abstract-teaser-video video {
+.teaser-video-wrapper video {
   display: block;
   width: 100%;
   height: auto;
