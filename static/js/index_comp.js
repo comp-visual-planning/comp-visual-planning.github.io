@@ -78,10 +78,17 @@ Sequential reasoning: arrange objects, obtain the tool first, then use it to ach
     const text = f.text || `${meta.starts || '?'} starts × ${meta.goals || '?'} goals → ${(meta.starts && meta.goals) ? (meta.starts * meta.goals) : '?'
       } tasks.`;
 
+    // main page: link to the env's own site with every episode (data-more-url="https://.../{env}/")
+    const moreUrl = document.getElementById('evals-container')?.dataset.moreUrl;
+    const more = moreUrl
+      ? `<span> <a href="${moreUrl.replace('{env}', env)}">See all ${meta.title || env} episodes &rarr;</a></span>`
+      : '';
+
     return `
     <div class="section-footer">
       <b>${title}</b>
       <span> ${text}</span>
+      ${more}
     </div>
   `;
   }
@@ -263,10 +270,12 @@ Sequential reasoning: arrange objects, obtain the tool first, then use it to ach
     setupSVThenPROnView(`div_${env}_ood`, 0.75);
   }
 
-  // Helper: is this (s,g) allowed under the current split?
+  // Helper: is this (s,g) allowed under the current split, and does index.json have episodes for it?
+  // (the main page keeps one example per split; each env's own site has every pair)
   function isAllowedPair(env, s, g, wantInd) {
     const ind = isInd(env, s, g);
-    return wantInd ? ind : !ind;
+    const hasEpisodes = (INDEX?.[env]?.pairs?.[pairKey(s, g)]?.episodes?.length || 0) > 0;
+    return (wantInd ? ind : !ind) && hasEpisodes;
   }
 
   function setupSelectors(env, page) {
@@ -427,8 +436,9 @@ Sequential reasoning: arrange objects, obtain the tool first, then use it to ach
       INDEX = {};
     }
 
-    // Render sections for all tasks
-    const order = ['cube', 'drawer', 'puzzle', 'tool_use'];
+    // Render sections for the tasks the page asks for (data-envs="cube" on an env's own site), default all
+    const root = document.getElementById('evals-container');
+    const order = (root.dataset.envs || 'cube,drawer,puzzle,tool_use').split(',');
     order.forEach(mountSection);
   });
 })();
