@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="All evaluation episodes of Compositional Visual Planning via Inference-Time Diffusion Scaling">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yixin Zhang, Yunhao Luo, Utkarsh A. Mishra, Woo Chul Shin, Yongxin Chen, Danfei Xu">
+  <title>Rollout Gallery | Compositional Visual Planning</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="./static/css/cvp.css">
+  <link rel="icon" type="image/png" href="./materials/favicon.png">
+</head>
+
+<body>
+  <!-- Each scene's episodes and index.json are served by its own site; {scene} is cube, drawer, puzzle or tool_use. -->
+  <div class="page is-gallery" id="gallery" data-scene-base="https://comp-visual-planning.github.io/{scene}/">
+
+    <nav class="gallery-nav" aria-label="Gallery filters">
+      <a class="back" href="index.html">&larr; Project page</a>
+
+      <div class="group">
+        <div class="eyebrow">Scene &middot; episodes</div>
+        <div class="scene-list" id="scene-list"></div>
+      </div>
+
+      <div class="group">
+        <div class="eyebrow">Start &darr; &middot; Goal &rarr;</div>
+        <div class="matrix" id="matrix"></div>
+        <div class="matrix-key">
+          <span><i class="is-ind"></i>IND (seen)</span>
+          <span><i></i>OOD (unseen)</span>
+        </div>
+        <div class="seg" id="split" role="group" aria-label="Task split">
+          <button type="button" data-split="all" aria-pressed="true">All</button>
+          <button type="button" data-split="ind" aria-pressed="false">IND</button>
+          <button type="button" data-split="ood" aria-pressed="false">OOD</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="eyebrow">Rollouts of</div>
+        <div class="seg" id="method" role="group" aria-label="Method">
+          <button type="button" data-method="ours" aria-pressed="true">Ours</button>
+          <button type="button" data-method="diffcollage" aria-pressed="false">DiffCollage</button>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <header>
+        <h1 class="hero">
+          <span class="hero-title">Rollout Gallery</span>
+          <span class="hero-sub">Compositional Visual Planning</span>
+        </h1>
+        <p style="margin-top: 20px;">
+          Evaluation episodes for all 100 tasks of the compositional planning benchmark. Each tile plays one policy
+          rollout.
+        </p>
+      </header>
+
+      <div class="gallery-body media">
+        <p class="gallery-hint">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 1.2 13 8.4H9.3l2 4.5-1.9.9-2-4.6-2.2 2.3z"/></svg>
+          <span>Click any tile to see the full policy rollouts of both methods and the synthesized videos.</span>
+        </p>
+        <p class="gallery-status" id="status" role="status">Loading episodes&hellip;</p>
+        <div id="pairs"></div>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="viewer" id="viewer" aria-label="Episode">
+    <div class="viewer-head">
+      <span id="viewer-title"></span>
+      <button class="btn is-quiet push" type="button" id="viewer-close">Close</button>
+    </div>
+    <div id="viewer-body"></div>
+  </dialog>
+
+  <footer class="footer">
+    <a href="index.html">Compositional Visual Planning via Inference-Time Diffusion Scaling</a>
+  </footer>
+
+  <script src="./static/js/cvp.js"></script>
+  <script src="./static/js/gallery.js"></script>
+</body>
+
+</html>

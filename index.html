@@ -3,460 +3,421 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Project Page for Compositional Video Planning via Inference-Time Diffusion Scaling">
+  <meta name="description" content="Project Page for Compositional Visual Planning via Inference-Time Diffusion Scaling">
   <meta name="keywords"
     content="Artificial Intelligence, Machine Learning, Embodied AI, Diffusion Model, Decision Making, Trajectory Stitching, Robotics, Behavior Cloning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- TODO: -->
   <meta name="author" content="Yixin Zhang, Yunhao Luo, Utkarsh A. Mishra, Woo Chul Shin, Yongxin Chen, Danfei Xu">
   <title>Compositional Visual Planning via Inference-Time Diffusion Scaling</title>
-
-  <!-- TODO: -->
   <meta name="google-site-verification" content="luiKJ6NTZHsgoD15xoPljBeAHAgSwMOoXhBmQG8-LQ8" />
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <!-- <link rel="stylesheet" href="./static/css/bulma-carousel.min.css"> -->
-  <!-- <link rel="stylesheet" href="./static/css/bulma-slider.min.css"> -->
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="stylesheet" href="./static/css/index_comp.css">
-  <link rel="stylesheet" href="bootstrap-grid.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/splide.min.js"></script>
-  <script src="./static/js/index_play.js"></script>
-  <script src="./static/js/index.js"></script>
-  <script src="./static/js/index_comp.js"></script>
-  <script src="load-mathjax.js" async></script>
-
-  <script src="https://www.youtube.com/iframe_api"></script>
-
-  <link rel="stylesheet" href="./static/css/splide.min.css">
-
-  <link rel="icon" type="image/x-icon" href="./materials/favicon.png" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="./static/css/cvp.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"></script>
+  <link rel="icon" type="image/png" href="./materials/favicon.png">
 </head>
 
 <body>
+  <div class="page">
 
-  <!-- TODO: -->
-  <!-- Navigation Bar -->
+    <nav class="toc" aria-label="Content">
+      <h2>Content</h2>
+      <hr>
+      <ul>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#toy-example">Toy Example</a></li>
+        <li><a href="#method">Method</a></li>
+        <li class="sub"><a href="#factor-graph">Factor Graph</a></li>
+        <li class="sub"><a href="#message-passing">Message Passing</a></li>
+        <li><a href="#benchmark">Benchmark</a></li>
+        <li><a href="#evaluations">Evaluations</a></li>
+        <li><a href="#takeaways">Takeaways</a></li>
+      </ul>
+      <a class="toc-gallery" href="gallery.html">
+        <b>Gallery &rarr;</b>
+        <span>rollouts for all 100 tasks</span>
+      </a>
+    </nav>
 
-  <!-- style="margin-bottom: 10px; padding-bottom: 10px" -->
-  <!-- style="margin-bottom: 0px; padding-bottom: 0px" -->
-  <section class="hero" style="background-color: #ebf0f1;">
-    <div class="hero-body hero-body-dec19">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <!-- is-1 or is-2 -->
-            <h1 class="title publication-title" style="font-size: 48px;">
-              Compositional Visual Planning via <br> Inference-Time Diffusion Scaling
-            </h1>
+    <main>
+      <header>
+        <h1 class="hero">
+          <span class="hero-title">Compositional Visual Planning</span>
+          <span class="hero-sub">via Inference-Time Diffusion Scaling</span>
+        </h1>
 
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">Yixin Zhang<sup>1</sup>,</span>
-              <span class="author-block">Yunhao Luo<sup>1,2</sup>,</span>
-              <span class="author-block">Utkarsh A. Mishra<sup>1</sup>,</span>
-              <span class="author-block">Woo Chul Shin<sup>1</sup>,</span>
-              <span class="author-block">Yongxin Chen<sup>1</sup>,</span>
-              <span class="author-block">Danfei Xu<sup>1</sup></span>
-            </div>
+        <p class="venue"><b>ICLR 2026</b> International Conference on Learning Representations</p>
 
-            <div class="is-size-5 publication-authors" style="margin-top: 0.5rem;">
-              <span class="author-block"><sup>1</sup>Georgia Institute of Technology</span>
-              <span class="author-block" style="margin-left: 0.75rem;"><sup>2</sup>University of Michigan</span>
-            </div>
+        <p class="authors">
+          <a href="https://yzhang4179.github.io/" target="_blank" rel="noopener noreferrer">Yixin Zhang</a><sup>1</sup>,
+          <a href="https://devinluo27.github.io/" target="_blank" rel="noopener noreferrer">Yunhao Luo</a><sup>1,2</sup>,
+          <a href="https://umishra.me/" target="_blank" rel="noopener noreferrer">Utkarsh A. Mishra</a><sup>1</sup>,
+          <a href="https://woocshin.github.io/profile/" target="_blank" rel="noopener noreferrer">Woo Chul Shin</a><sup>1</sup>,
+          <a href="https://yongxin.ae.gatech.edu/" target="_blank" rel="noopener noreferrer">Yongxin Chen</a><sup>1</sup>,
+          <a href="https://faculty.cc.gatech.edu/~danfei/" target="_blank" rel="noopener noreferrer">Danfei Xu</a><sup>1</sup>
+          <span class="aff"><sup>1</sup>Georgia Institute of Technology &nbsp; <sup>2</sup>University of Michigan</span>
+        </p>
 
-            <div class="publication-venue is-size-5 has-text-centered" style="margin: 0.5rem auto;">
-              ICLR 2026
-            </div>
+        <nav class="links" aria-label="Project links">
+          <a href="https://arxiv.org/abs/2603.02646" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1h6.5L13 4.5V15H3zm6 1v3h3zM5 8v1h6V8zm0 2.5v1h6v-1z"/></svg>
+            <span>arXiv</span>
+          </a>
+          <a href="https://openreview.net/forum?id=EEONns7ae4" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 2h13v9H8.2L4.5 14.2V11h-3zM4 5v1.2h8V5zm0 2.6v1.2h5.5V7.6z"/></svg>
+            <span>OpenReview</span>
+          </a>
+          <a href="https://github.com/yzhang4179/comp_visual_planning_release" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+            <span>Code</span>
+          </a>
+          <a href="https://github.com/yzhang4179/comp_visual_planning_toy_example" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+            <span>Toy Example</span>
+          </a>
+          <a class="is-plain" href="gallery.html">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 1h6v6H1zm8 0h6v6H9zM1 9h6v6H1zm8 0h6v6H9z"/></svg>
+            <span>Gallery</span>
+          </a>
+        </nav>
+      </header>
 
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/2603.02646" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a href="https://openreview.net/forum?id=EEONns7ae4"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-book-open"></i>
-                    </span>
-                    <span>OpenReview</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a href="https://github.com/yzhang4179/comp_visual_planning_release"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-code"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-              </div>
-            </div>
+      <video class="teaser media" controls playsinline preload="none" poster="materials/teaser/poster.jpg"
+        aria-label="Compositional Visual Planning teaser video">
+        <source src="materials/teaser/2026-iclr-cvp.mp4" type="video/mp4">
+      </video>
+      <p class="caption teaser-caption media">
+        Compositional Visual Planning composes long-horizon video plans from a short-horizon video diffusion model at
+        inference time, with no additional training. Boundary agreement between overlapping video chunks is enforced
+        on Tweedie estimates rather than on noisy states.
+      </p>
 
 
+      <h2 class="tagline" id="abstract">Abstract.</h2>
+      <p>
+        Diffusion models excel at short-horizon robot planning, yet scaling them to long-horizon tasks remains
+        challenging due to computational constraints and limited training data. Existing compositional approaches
+        stitch together short segments by separately denoising each component and averaging overlapping regions, which
+        becomes unstable as the factorization assumption breaks down in noisy data space. We propose that the key to
+        stable compositional generation lies in enforcing boundary agreement on the estimated clean data (Tweedie
+        estimates) rather than on noisy intermediate states. We formulate long-horizon planning as inference over a
+        chain-structured factor graph of overlapping video chunks, where pretrained short-horizon video diffusion
+        models provide local priors, and enforce boundary agreement at inference time through synchronous and
+        asynchronous message passing on Tweedie estimates. Our training-free framework significantly improves over
+        existing baselines across 100 simulation tasks spanning 4 scenes, and generalizes to unseen start-goal
+        combinations that are not present in the training data.
+      </p>
 
+
+      <h2 class="tagline" id="toy-example">Toy Example.</h2>
+      <p>
+        We illustrate the failure mode of composing in noisy space with a 2D drawing task. A short-horizon diffusion
+        model is trained on circular arc clips. At test time,
+        <span class="f1">factor 1</span>, <span class="f2">factor 2</span> and <span class="f3">factor 3</span>,
+        three overlapping 120&deg; arcs, are composed into a three-petal flower.
+      </p>
+
+      <div class="toy media" id="toy">
+        <div class="toy-side">
+          <div class="eyebrow">Training data</div>
+          <figure class="tile is-fit">
+            <img src="materials/toy/dataset.png" alt="Distribution of the arc clips used for training">
+          </figure>
+          <p class="caption">
+            DiffCollage drifts and leaves gaps at the factor boundaries. Our method enforces boundary agreement on
+            the Tweedie estimates, so the noisy samples align across boundaries and the loops close.
+          </p>
+          <div>
+            <button class="btn is-quiet" type="button" id="toy-replay">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5a5.5 5.5 0 1 1-5.2 3.7l1.4.5A4 4 0 1 0 8 4v2.3L4.2 3.4 8 .5z"/></svg>
+              <span>Replay</span>
+            </button>
           </div>
         </div>
+        <div class="toy-videos">
+          <div class="eyebrow">Noisy samples</div>
+          <figure class="tile">
+            <video muted playsinline preload="metadata" src="materials/toy/diffcollage/xts.mp4"
+              aria-label="Noisy samples, DiffCollage"></video>
+            <figcaption class="tag">DiffCollage</figcaption>
+          </figure>
+          <figure class="tile">
+            <video muted playsinline preload="metadata" src="materials/toy/ours/xts.mp4"
+              aria-label="Noisy samples, our method"></video>
+            <figcaption class="tag is-ours">Ours</figcaption>
+          </figure>
+          <div class="eyebrow">Tweedie estimates</div>
+          <figure class="tile">
+            <video muted playsinline preload="metadata" src="materials/toy/diffcollage/x0s.mp4"
+              aria-label="Tweedie estimates, DiffCollage"></video>
+            <figcaption class="tag">DiffCollage</figcaption>
+          </figure>
+          <figure class="tile">
+            <video muted playsinline preload="metadata" src="materials/toy/ours/x0s.mp4"
+              aria-label="Tweedie estimates, our method"></video>
+            <figcaption class="tag is-ours">Ours</figcaption>
+          </figure>
+        </div>
       </div>
-    </div>
-  </section>
+      <p class="caption toy-note media">
+        Code and pretrained checkpoint for this example:
+        <a href="https://github.com/yzhang4179/comp_visual_planning_toy_example" target="_blank"
+          rel="noopener noreferrer">comp_visual_planning_toy_example</a>.
+      </p>
 
 
+      <h2 class="tagline" id="method">Method.</h2>
+      <p>
+        We compose long-horizon plans from overlapping, short-horizon factors produced by a single pretrained video
+        diffusion model. The central challenge is the consistency of this composition: during forward diffusion, noisy
+        variables become entangled across time, breaking the factorization assumption behind score averaging. Our key
+        insight is to compose where the model's estimates are most reliable, on the Tweedie estimates.
+      </p>
+      <figure class="figure media">
+        <img src="materials/method/overview.png" loading="lazy"
+          alt="Training as a unified factor, inference as a chain-structured factor graph">
+        <figcaption class="caption">
+          <b>Overview.</b> We train a short-horizon visual diffusion model on clips treated as a single factor. At
+          inference, we chain overlapping factors into a linear factor graph: the start and goal boundary variables
+          are anchored at the ends, while neighboring factors exchange information through shared transition boundary
+          variables.
+        </figcaption>
+      </figure>
 
-
-  <section class="section" id="teaser-video">
-    <div class="container is-max-widescreen">
-      <div class="teaser-video-wrapper">
-        <video controls playsinline preload="metadata" aria-label="Compositional Visual Planning teaser video">
-          <source src="materials/teaser/2026-iclr-cvp.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+      <h3 class="subhead" id="factor-graph">1. Factor graph.</h3>
+      <p>
+        We represent the plan as a linear chain \(z = [u^1, \dots, u^m]\) and place \(n\) overlapping factors
+        \(x^i = [u^{2i-1}, u^{2i}, u^{2i+1}]\), \(i = 1, \dots, n\), all generated by the same short-horizon model
+        \(x_\theta\). The endpoints \(u^1 = s\) and \(u^m = g\) are the start and goal boundary variables, and
+        \(A_i\) and \(B_i\) are linear selectors that extract the first and last frames of factor \(x^i\). The
+        feasibility of a plan is enforced by the following boundary agreements:
+      </p>
+      <div class="eqn">
+        $$\begin{aligned}
+        \text{(Start/Goal Anchoring)} \quad &amp; A_1 x^1 = s, \qquad B_n x^n = g, \\
+        \text{(Transition Boundary)} \quad &amp; B_i x^i = A_{i+1} x^{i+1}, \quad i = 1,\dots,n-1.
+        \end{aligned}$$
       </div>
-    </div>
-  </section>
+      <p>
+        This reduces global planning to local generation with explicit boundary equalities. Forward diffusion,
+        however, breaks the factorization among the noisy factors \(x_t^{1:n}\), so we impose the dependencies on
+        the Tweedie estimates \(x_{0|t}^{1:n} = x_\theta(x_t^{1:n})\) instead:
+      </p>
+      <div class="eqn">
+        $$p(z_t) = \prod_{i=1}^{n} p(x_t^i) \cdot \exp\!\big(-L(x_{0|t}^{1:n})\big),$$
+      </div>
+      <p>
+        where \(\exp(-L(x_{0|t}^{1:n}))\) acts as a potential that penalizes inconsistencies among the estimated
+        clean variables. We plan entirely in the latent space of the Cosmos tokenizer and map the final plan to robot
+        actions with an inverse dynamics model.
+      </p>
+
+      <h3 class="subhead" id="message-passing">2. Message passing.</h3>
+      <p>
+        The loss \(L = L_{\mathrm{sync}} + L_{\mathrm{async}}\) combines two message passing schemes on the Tweedie
+        estimates, and guides each DDIM step through diffusion-sphere guidance.
+      </p>
+
+      <div class="scheme">
+        <h4>Synchronous</h4>
+        <p>
+          With Gaussian boundary potentials, the joint constraint over all factors is Gaussian,
+          \(p_{\mathrm{sync}}(x^{1:n} \mid s, g) \propto \exp\!\big(-\tfrac{1}{2} (x^{1:n})^{T} \Sigma^{-1} x^{1:n} +
+          \eta^{T} x^{1:n}\big)\). We penalize the deviation of the Tweedie estimates from the consistent linear
+          system:
+        </p>
+        <div class="eqn">
+          $$L_{\mathrm{sync}} = \left\lVert \Sigma^{-1} x_{0|t}^{1:n} - \eta \right\rVert.$$
+        </div>
+        <p>
+          All updates are computed from the same iterate and applied simultaneously, which preserves parallelism and
+          eliminates order-dependent effects, but can be numerically stiff.
+        </p>
+      </div>
+
+      <div class="scheme">
+        <h4>Asynchronous</h4>
+        <p>
+          One-sided, stop-gradient targets propagate constraints forward from the start and backward from the goal in
+          a TD-style manner:
+        </p>
+        <div class="eqn">
+          $$\begin{aligned}
+          L_{\mathrm{async}}
+          &amp;= \underbrace{\left\lVert s - A_{1}x_{0|t}^{1} \right\rVert
+          + \sum_{i=1}^{n-1} \gamma^{i} \left\lVert \mathrm{sg}(B_i \hat{x}_{0|t}^{i}) - A_{i+1}x_{0|t}^{i+1} \right\rVert}_{\text{forward passing}} \\
+          &amp;\quad + \underbrace{\sum_{i=1}^{n-1} \gamma^{n-i} \left\lVert B_i x_{0|t}^{i} - \mathrm{sg}(A_{i+1}\hat{x}_{0|t}^{i+1}) \right\rVert
+          + \left\lVert B_{n}x_{0|t}^{n} - g \right\rVert}_{\text{backward passing}},
+          \end{aligned}$$
+        </div>
+        <p>
+          where \(\mathrm{sg}(\cdot)\) is the stop-gradient operator, \(\hat{x}_{0|t}\) is a target produced by the
+          diffusion model with the latest parameters, \(x_{0|t}\) is produced by an EMA of the model parameters, and the
+          discount \(\gamma\) down-weights messages as they move away from the start or the goal. This yields faster
+          and more stable convergence at the cost of mild bias.
+        </p>
+      </div>
+
+      <div class="scheme">
+        <h4>Diffusion-sphere guidance</h4>
+        <p>
+          To balance alignment and diversity, we interpolate between the unconditional sampling direction and the
+          normalized descent direction induced by the loss:
+        </p>
+        <div class="eqn">
+          $$d_m = d^{\mathrm{sample}} + g_r \big( d^{*} - d^{\mathrm{sample}} \big), \qquad
+          x_{t-1}^{1:n} = \mu_{t-1}^{1:n} + r \, \frac{d_m}{\lVert d_m \rVert},$$
+        </div>
+        <p>
+          where \(d^{\mathrm{sample}} = \sigma_t \epsilon_t\) is the unconditional annealing step,
+          \(d^{*} = -\sqrt{s}\,\sigma_t \cdot \nabla_{x_t^{1:n}} L \,/\, \lVert \nabla_{x_t^{1:n}} L \rVert\) is the
+          steepest descent direction for the joint objective, and \(d_m\) is normalized to satisfy the
+          spherical-Gaussian constraint.
+        </p>
+      </div>
+
+      <p style="margin-top: 18px;">
+        Combining the synchronous and asynchronous losses outperforms either alone, and success rates improve as the
+        number of sampling steps increases.
+      </p>
 
 
-  <section class="section" id="abstract">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified div_abs_text">
+      <h2 class="tagline" id="benchmark">Benchmark.</h2>
+      <p>
+        We develop a simulation benchmark for compositional planning in robotic manipulation, built on ManiSkill. Each
+        scene contains <i>N</i> start states and <i>N</i> goal states, resulting in <i>N</i><sup>2</sup> tasks, and the
+        training data only contains demonstrations for <i>N</i> start-goal pairs. At test time, we evaluate on both
+        the <i>N</i> seen pairs (in-distribution, IND) and the remaining <i>N</i><sup>2</sup> &minus; <i>N</i> unseen
+        pairs (out-of-distribution, OOD), since a capable planner should generalize to new combinations if the dataset
+        covers all the required fragments. The four scenes give 100 tasks, 18 IND and 82 OOD, all planned from raw
+        pixels without privileged state.
+      </p>
+
+      <div class="media">
+      <div class="tabs" role="tablist" aria-label="Benchmark scenes" id="benchmark-tabs">
+          <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="bench-puzzle">Puzzle</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bench-drawer" tabindex="-1">Drawer</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bench-cube" tabindex="-1">Cube</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bench-tool" tabindex="-1">Tool-Use</button>
+        </div>
+        <figure class="scene-panel" id="bench-puzzle" role="tabpanel" data-tab-panel>
+          <div class="frame"><img src="materials/benchmark/puzzle/layout.png" loading="lazy"
+              alt="Start and goal layouts of the Puzzle scene"></div>
+          <figcaption class="caption">
+            <b>Puzzle.</b> 64 tasks (8 IND, 56 OOD), composed from 6 factors. The robot rearranges the pieces, then
+            assembles them, choosing the assembly order based on the start and goal.
+          </figcaption>
+        </figure>
+        <figure class="scene-panel" id="bench-drawer" role="tabpanel" data-tab-panel hidden>
+          <div class="frame"><img src="materials/benchmark/drawer/layout.png" loading="lazy"
+              alt="Start and goal layouts of the Drawer scene"></div>
+          <figcaption class="caption">
+            <b>Drawer.</b> 16 tasks (4 IND, 12 OOD), composed from 5 factors. The robot acquires the pen from the
+            drawer while avoiding collisions, then draws the target pattern.
+          </figcaption>
+        </figure>
+        <figure class="scene-panel" id="bench-cube" role="tabpanel" data-tab-panel hidden>
+          <div class="frame"><img src="materials/benchmark/cube/layout.png" loading="lazy"
+              alt="Start and goal layouts of the Cube scene"></div>
+          <figcaption class="caption">
+            <b>Cube.</b> 16 tasks (4 IND, 12 OOD), composed from 5 factors. Fine-grained, contact-rich manipulation:
+            the robot first rearranges the cubes, then stacks them into the goal configuration.
+          </figcaption>
+        </figure>
+        <figure class="scene-panel" id="bench-tool" role="tabpanel" data-tab-panel hidden>
+          <div class="frame"><img src="materials/benchmark/tool_use/layout.png" loading="lazy"
+              alt="Start and goal layouts of the Tool-Use scene"></div>
+          <figcaption class="caption">
+            <b>Tool-Use.</b> 4 tasks (2 IND, 2 OOD), composed from 3 factors. The robot arranges the objects, obtains
+            the tool, then uses it to reach the goal.
+          </figcaption>
+        </figure>
+      </div>
+
+
+      <h2 class="tagline" id="evaluations">Evaluations.</h2>
+      <p>
+        Given a start image and a goal image, each planner synthesizes a video plan, and an inverse dynamics model
+        executes it. We show one randomly chosen in-distribution and one out-of-distribution example per scene, for
+        our method and DiffCollage. More episodes for every task are in the <a href="gallery.html">gallery</a>.
+      </p>
+
+      <div class="media">
+      <div class="tabs" role="tablist" aria-label="Evaluation scenes" id="eval-tabs">
+          <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="eval-view"
+            data-scene="puzzle">Puzzle</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="eval-view" tabindex="-1"
+            data-scene="drawer">Drawer</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="eval-view" tabindex="-1"
+            data-scene="cube">Cube</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="eval-view" tabindex="-1"
+            data-scene="tool_use">Tool-Use</button>
+        </div>
+        <div class="toolbar">
+          <div class="seg" id="eval-split" role="group" aria-label="Task split">
+            <button type="button" data-split="ind" aria-pressed="true">In-distribution</button>
+            <button type="button" data-split="ood" aria-pressed="false">Out-of-distribution</button>
+          </div>
+          <span class="caption" id="eval-info"></span>
+          <button class="btn is-quiet push" type="button" id="eval-replay">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5a5.5 5.5 0 1 1-5.2 3.7l1.4.5A4 4 0 1 0 8 4v2.3L4.2 3.4 8 .5z"/></svg>
+            <span>Replay</span>
+          </button>
+        </div>
+        <div id="eval-view" role="tabpanel"></div>
+        <p class="eval-foot">
+          <a class="btn" id="eval-more" href="gallery.html?scene=puzzle"><span>More Puzzle episodes in the gallery</span>
+            &rarr;</a>
+        </p>
+      </div>
+
+
+      <h2 class="tagline" id="takeaways">Takeaways.</h2>
+      <ol class="takeaways">
+        <li>
+          <div class="takeaway-num">1</div>
+          <div>
+            <h3>Compose on Tweedie estimates, not on noisy states.</h3>
             <p>
-              Diffusion models excel at short-horizon robot planning, yet scaling them to long-horizon tasks remains
-              challenging due to computational constraints and limited training data.
-              Existing compositional approaches stitch together short segments by separately denoising each component
-              and averaging overlapping regions.
-              However, this suffers from instability as the factorization assumption breaks down in noisy data space,
-              leading to inconsistent global plans.
-              We propose that the key to stable compositional generation lies in enforcing boundary agreement on the
-              estimated clean data (Tweedie estimates) rather than on noisy intermediate states.
-              Our method formulates long-horizon planning as inference over a chain-structured factor graph of
-              overlapping video chunks, where pretrained short-horizon video diffusion models provide local priors.
-              At inference time, we enforce boundary agreement through a novel combination of synchronous and
-              asynchronous message passing that operates on Tweedie estimates, producing globally consistent guidance
-              without requiring additional training.
-              Our training-free framework demonstrates significant improvements over existing baselines across 100
-              simulation tasks spanning 4 diverse scenes, effectively generalizing to unseen start-goal combinations
-              that were not present in the original training data.
+              Forward diffusion entangles noisy variables across time and breaks the factorization assumption behind
+              score averaging. Enforcing boundary agreement on the estimated clean data yields globally consistent
+              long-horizon plans.
             </p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-full-width">
-
-          <h2 class="title is-4">Motivating Toy Example</h2>
-
-          <div class="container is-max-desktop" style="overflow: hidden; margin: 0;">
-            <div class="splide_page_div_1" id="mw_qual_tk2">
-
-              <div class="toy_left_img">
-                <img src="materials/toy/dataset.png" alt="toy_dataset">
-                <p class="splide_kuka_high_margin_caption">Dataset Distribution</p>
-              </div>
-
-              <div class="toy_right_videos">
-                <div class="row_label">Noisy Samples</div>
-                <div class="kuka_toy_row">
-
-                  <div>
-                    <video playsinline autoplay muted>
-                      <source src="materials/toy/diffcollage/xts.mp4" type="video/mp4">
-                    </video>
-                    <p class="splide_kuka_low_margin_caption">DiffCollage</p>
-                  </div>
-
-                  <div>
-                    <video playsinline autoplay muted>
-                      <source src="materials/toy/ours/xts.mp4" type="video/mp4">
-                    </video>
-                    <p class="splide_kuka_low_margin_caption">Ours</p>
-                  </div>
-                </div>
-                <div class="row_label">Estimated Tweedies</div>
-                <div class="kuka_toy_row">
-                  <div>
-                    <video playsinline autoplay muted>
-                      <source src="materials/toy/diffcollage/x0s.mp4" type="video/mp4">
-                    </video>
-                    <p class="splide_kuka_low_margin_caption">DiffCollage</p>
-                  </div>
-
-                  <div>
-                    <video playsinline autoplay muted>
-                      <source src="materials/toy/ours/x0s.mp4" type="video/mp4">
-                    </video>
-                    <p class="splide_kuka_low_margin_caption">Ours</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="left-caption">
-            <b>Qualitative Illustration of Toy Example.</b>
-            To illustrate our approach, we consider a simple 2D drawing task in which the objective is to generate a
-            three-petal “flower” by composing three
-            120° circular arc segments. We train a short-horizon diffusion model on <em>arc</em> clips from the
-            dataset shown on the left. At test time,
-            <span style="color: #00c743; font-weight: bold;">factor 1</span>,
-            <span style="color: #ED784A; font-weight: bold;">factor 2</span>, and
-            <span style="color: #1984C5; font-weight: bold;">factor 3</span>
-            —with partial overlaps—are composed to produce the full flower-like pattern. The right side
-            visualizes noisy samples and their corresponding
-            Tweedie mean estimates from both DiffCollage and our method. While DiffCollage drifts and
-            produces boundary gaps between factors, resulting in globally inconsistent generations, our method rapidly
-            converges by enforcing boundary agreement on the Tweedie estimates, thereby maintaining global consistency
-            and guiding the noisy samples to align seamlessly across factor boundaries.
-            <span class="comp_dfu_prc_repl">
-              <span class="replay_v2" video_section="mw_qual_tk2">
-                <img src="static/replay.png" />
-                <span>replay</span>
-              </span>
-            </span>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-
-
-  <!-- Begins Compositional Planning Benchmark -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-full-width">
-          <h2 class="title is-4">Compositional Planning Benchmark</h2>
-
-          <section class="hero is-light is-small" style="margin: 0px; padding: 0px">
-            <div class="container is-max-desktop" style="margin: 0px;  padding: 0px">
-              <div class="hero-body" style="margin: 0px;  padding-bottom: 10px; padding-top: 10px">
-
-                <div class="container is-max-desktop" style="overflow: hidden; margin: 0px">
-
-                  <div id="splide-mw-qual" class="splide">
-                    <div class="splide__track">
-                      <ul class="splide__list">
-
-
-
-                        <!-- MW TK 3 -->
-                        <li class="splide__slide splide_kuka">
-
-                          <div class="splide_page_div_1" id="mw_qual_tk3">
-
-                            <div>
-                              <span class="splide_kuka_prob_id_repl">
-                                Cube
-                              </span>
-                            </div>
-                            <div class="layout_figure">
-                              <img src="materials/benchmark/cube/layout.png" alt="cube_layout">
-                            </div>
-
-                          </div>
-                        </li>
-
-
-                        <!-- MW TK 4 -->
-                        <li class="splide__slide splide_kuka">
-
-                          <div class="splide_page_div_1" id="mw_qual_tk4">
-
-                            <div>
-                              <span class="splide_kuka_prob_id_repl">
-                                Drawer
-                              </span>
-                            </div>
-
-                            <div class="layout_figure">
-                              <img src="materials/benchmark/drawer/layout.png" alt="drawer_layout">
-                            </div>
-
-                          </div>
-                        </li>
-
-
-                        <!-- MW Tk 5 -->
-                        <li class="splide__slide splide_kuka">
-                          <div class="splide_page_div_1" id="mw_qual_tk5">
-
-                            <div>
-                              <span class="splide_kuka_prob_id_repl">
-                                Puzzle
-                              </span>
-                            </div>
-                            <div class="layout_figure">
-                              <img src="materials/benchmark/puzzle/layout.png" alt="puzzle_layout">
-                            </div>
-
-                          </div>
-                        </li>
-
-
-                        <!-- MW TK 6 -->
-                        <li class="splide__slide splide_kuka">
-
-                          <div class="splide_page_div_1" id="mw_qual_tk6">
-
-                            <div>
-                              <span class="splide_kuka_prob_id_repl">
-                                Tool-Use
-                              </span>
-                            </div>
-                            <div class="layout_figure">
-                              <img src="materials/benchmark/tool_use/layout.png" alt="tool_layout">
-                            </div>
-
-                          </div>
-                        </li>
-
-
-                      </ul>
-                    </div>
-                  </div>
-
-
-
-
-                </div>
-
-                <b> Qualitative Illustration of Compositional Planning Benchmark.</b>
-                We introduce a benchmark for <em>compositional planning</em> in 6-DoF robotic manipulation. Each scene
-                contains <em>N</em> start states and <em>N</em> goal states, yielding a total of <em>N²</em> possible
-                tasks corresponding to all start–goal pairs (task layouts are shown above; swipe horizontally to view
-                more). The training dataset includes demonstrations for only <em>N</em> of these start–goal pairs. At
-                test time, we evaluate the planner on both the <em>N</em> seen pairs (in-distribution) and the remaining
-                <em>N² – N</em> unseen pairs (out-of-distribution). A capable planner should generalize to novel
-                start–goal combinations if the dataset provides sufficient coverage of the constituent behavioral
-                fragments.
-
-                The goal of this benchmark is to evaluate whether an algorithm can acquire distinct high-level skills
-                through <em>skill-agnostic factors</em> and compose them to solve new tasks at test time. This requires
-                learning not only low-level motor control skills, but also high-level sequential reasoning and visual
-                understanding of 3D geometry and physics. All experiments are conducted in the <em>visual planning</em>
-                setting, where the robot receives only raw pixel observations without access to any privileged state
-                information. The layouts above illustrate the diversity of task configurations and reset ranges.
-              </div>
-            </div>
-          </section>
-
-          <!-- <b> Qualitative Comparison in Meta-World Environment.</b>  -->
-
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-full-width">
-
-          <h2 class="title is-4">Evaluation on Compositional Planning Benchmark</h2>
-          <p>
-            We evaluate our approach on the proposed <em>Compositional Planning Benchmark</em>, which comprises 100
-            diverse tasks. We release all evaluation materials, including synthesized video plans and policy rollouts,
-            for both our method and DiffCollage. Below we show one randomly chosen in-distribution and one
-            out-of-distribution example per scene; all episodes are on the per-scene pages:
-            <a href="https://comp-visual-planning.github.io/cube/">Cube</a>,
-            <a href="https://comp-visual-planning.github.io/drawer/">Drawer</a>,
-            <a href="https://comp-visual-planning.github.io/puzzle/">Puzzle</a> and
-            <a href="https://comp-visual-planning.github.io/tool_use/">Tool-Use</a>.
-          </p>
-
-          <p>
-            Our evaluation is designed to address three key questions: (1) the <strong>visual fidelity</strong> of
-            synthesized video plans, illustrated through high-quality visualizations; (2) the <strong>compositional
-              generalization</strong> of our approach to long-horizon, out-of-distribution tasks; and (3) the extent to
-            which <strong>video plans can effectively guide low-level robotic control</strong>. Together, these results
-            demonstrate the scalability and reliability of compositional visual planning in challenging robotic
-            settings.
-          </p>
-
-          <p>
-            For pixel-based evaluations (synthesized videos), we disable ray tracing to ensure fully observable scenes
-            without shadows or lighting artifacts. For policy rollouts, ray tracing is enabled to provide physically
-            realistic observations and a clearer visualization of the robot’s manipulation skills.
-          </p>
-        </div>
-      </div>
-  </section>
-
-  </div>
-
-  </div>
-  </div>
-  </div>
-  </section>
-
-  <div id="evals-container" data-more-url="https://comp-visual-planning.github.io/{env}/"></div>
-
-
-
-
-
-  <section class="section" id="conclusion">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-full-width">
-          <h2 class="title is-3">Conclusion</h2>
-          <div class="content has-text-justified div_abs_text">
+        </li>
+        <li>
+          <div class="takeaway-num">2</div>
+          <div>
+            <h3>No additional training.</h3>
             <p>
-              We introduced Compositional Visual Planning, an inference-time method that composes long-horizon plans by
-              stitching overlapping video factors with message passing on Tweedie estimates. A chain-structured factor
-              graph imposes global consistency, enforced via joint synchronous and asynchronous updates, while
-              diffusion-sphere guidance balances alignment and diversity without retraining. Compositional Visual
-              Planning is plug-and-play with short-horizon diffusion video prediction model, scales with test-time
-              compute, and generalizes to unseen start–goal combinations.
-              Beyond robotics, the framework is applicable to broader domains, such as panorama image generation and
-              long-form text-to-video synthesis, which we leave for future exploration.
+              The method is plug-and-play with a frozen short-horizon video diffusion model and scales with test-time
+              compute: success rates improve as the number of sampling steps increases.
             </p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        </li>
+        <li>
+          <div class="takeaway-num">3</div>
+          <div>
+            <h3>Generalization to unseen start-goal combinations.</h3>
+            <p>
+              Across 100 simulation tasks in 4 scenes, our method maintains stable performance on out-of-distribution
+              tasks, where DiffCollage fails at almost all tasks and policy learning baselines degrade significantly.
+              On a real Franka robot, it succeeds in 18 of 20 out-of-distribution trials, against 0 of 20 for
+              DiffCollage.
+            </p>
+          </div>
+        </li>
+      </ol>
 
 
-
-
-  <hr>
-
-
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content column is-full-width ">
-      <h2 class="title is-4">BibTeX</h2>
-      <pre><code>@misc{zhang2026compositionalvisualplanninginferencetime,
+      <h2 class="tagline" id="bibtex">BibTeX.</h2>
+      <pre class="bibtex"><code>@misc{zhang2026compositionalvisualplanninginferencetime,
   title={Compositional Visual Planning via Inference-Time Diffusion Scaling},
   author={Yixin Zhang and Yunhao Luo and Utkarsh Aashu Mishra and Woo Chul Shin and Yongxin Chen and Danfei Xu},
   year={2026},
@@ -464,40 +425,19 @@
   archivePrefix={arXiv},
   primaryClass={cs.RO},
   url={https://arxiv.org/abs/2603.02646}
-}
-    </code></pre>
-    </div>
-  </section>
-
-
-
-
-
-
+}</code></pre>
+    </main>
+  </div>
 
   <footer class="footer">
-    <div class="container">
-
-      <div class="content has-text-centered">
-
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-8 has-text-centered">
-          <div class="content">
-            <p>
-              This website is forked from the
-              <a href="https://nerfies.github.io/">Nerfies</a> and
-              <a href="https://github.com/nerfies/nerfies.github.io">source code</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    Page layout adapted from
+    <a href="https://gatech-rl2.github.io/actionchunkscheduling/" target="_blank" rel="noopener noreferrer">Armory</a>
+    and <a href="https://github.com/videomimic-1/videomimic-1.github.io" target="_blank"
+      rel="noopener noreferrer">VideoMimic</a>.
   </footer>
 
-  <!-- <script src="./static/js/last_run.js"></script> -->
-
+  <script src="./static/js/cvp.js"></script>
+  <script src="./static/js/main.js"></script>
 </body>
 
 </html>
